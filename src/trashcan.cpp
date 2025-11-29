@@ -1,17 +1,9 @@
+#include "myheader.h"
 #include <Arduino.h>
 #include <ESP32Servo.h>
 
-const int servoPin{10};
-const int trigPin{3};
-const int echoPin{4};
-Servo controlServo{};
-
 void trashcan_setup() {
-    Serial.begin(115200);
-    delay(1000);
-    pinMode(trigPin, OUTPUT);
-    pinMode(echoPin, INPUT);
-    controlServo(servoPin);
+
 }
 
 void trashcan_loop() {

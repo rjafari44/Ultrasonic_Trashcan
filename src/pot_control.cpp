@@ -1,13 +1,33 @@
+#include "myheader.h"
 #include <Arduino.h>
 #include <ESP32Servo.h>
 
-void pot_setup() {
+// global variable declaration, made to only be used within this file
+const int servoPin{10};
+static Servo controlServo{};
+const int potReadPin{4};
+static int potValue{};
+static int hardAngle{};
+static int smoothAngle{};
+static char input{};
 
+void pot_setup() {
+    pinMode(servoPin, OUTPUT);
+    controlServo.attach(servoPin);
+    Serial.println("\n*** Potentiometer-Controlled Servo Mode ***");
+    Serial.println("Servo is ready to be controlled by potentiometer. Type 'm' or 'M' + Enter to return to mode menu");
 }
 
 void pot_loop() {
 
-    // asff
+    potValue = analogRead(potReadPin);            // get potentiometer value in range of 0-4095
+    hardAngle = (potValue * 180) / 4095;          // convert 0-4095 range down to 0-180
+    smoothAngle = (smoothAngle * 3 + angle) / 4;  // Simple smoothing: blend previous and current angle
+    controlServo.write(angle);                    // wite the angle to the servo
+
+    Serial.println("\nAngle is: " + smoothAngle);
+
+    delay(20);
 
     if (Serial.available() > 0) {        // If a character is waiting in the Serial input buffer, read it
         input = Serial.read();
