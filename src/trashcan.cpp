@@ -2,6 +2,8 @@
 #include <Arduino.h>
 #include <ESP32Servo.h>
 
+static char input{};
+
 void trashcan_setup() {
 
 }
