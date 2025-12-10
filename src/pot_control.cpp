@@ -20,12 +20,12 @@ void pot_setup() {
 
 void pot_loop() {
 
-    potValue = analogRead(potReadPin);            // get potentiometer value in range of 0-4095
-    hardAngle = (potValue * 180) / 4095;          // convert 0-4095 range down to 0-180
+    potValue = analogRead(potReadPin);                // get potentiometer value in range of 0-4095
+    hardAngle = (potValue * 180) / 4095;              // convert 0-4095 range down to 0-180
     smoothAngle = (smoothAngle * 3 + hardAngle) / 4;  // Simple smoothing: blend previous and current angle
     controlServo.write(hardAngle);                    // wite the angle to the servo
 
-    Serial.println("\nAngle is: " + smoothAngle);
+    Serial.println("\nAngle is: " + smoothAngle);     // dampen out angle
 
     delay(20);
 
