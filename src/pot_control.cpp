@@ -5,10 +5,13 @@
 // global variable declaration, made to only be used within this file
 const int servoPin{10};
 static Servo controlServo{};
+
 const int potReadPin{4};
 static int potValue{};
+
 static int hardAngle{};
 static int smoothAngle{};
+
 static char input{};
 
 void pot_setup() {

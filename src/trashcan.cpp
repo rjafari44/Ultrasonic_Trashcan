@@ -1,16 +1,38 @@
 #include "myheader.h"
 #include <Arduino.h>
 #include <ESP32Servo.h>
+#include <WiFi.h>
+
+const char* ssid = "ssid";
+const char* password = "password";
+
+static Servo controlServo{};
+const int servoPin{10};
+
+const int trigPin = 3;
+const int echoPin = 4;
 
 static char input{};
 
 void trashcan_setup() {
+    WiFi.mode(WIFI_STA);
+    WiFi.begin(ssid, password);
 
+    if (WiFi.status() == WL_CONNECTED) {
+    Serial.println("Connected!");
+    Serial.println(WiFi.localIP());
+    }
+    else {
+    Serial.println("Not connected");
+    }
+
+    pinMode(trigPin, OUTPUT);
+    pinMode(echoPin, INPUT);
 }
 
 void trashcan_loop() {
 
-    // assa
+    // 
 
     if (Serial.available() > 0) {        // If a character is waiting in the Serial input buffer, read it
         input = Serial.read();
