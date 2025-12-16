@@ -2,38 +2,41 @@
 #include <Arduino.h>
 #include <ESP32Servo.h>
 
+// servo variables
 static Servo controlServo{};
 const int servoPin{10};
 
+// ultrasonic sensor variables
 const int trigPin = 3;
 const int echoPin = 4;
-
 long duration{};
 long distance{};
 double soundSpeed{0.0343}; // speed of sound in centimeters per microseconds
 
+// menu variable
 static char input{};
 
 void trashcan_setup() {
 
-    controlServo.attach(servoPin);
-    pinMode(trigPin, OUTPUT);
-    pinMode(echoPin, INPUT);
+    controlServo.attach(servoPin); // setup the servo pin
+    pinMode(trigPin, OUTPUT);      // set the trigger pin of the ultrasonic sensor as output
+    pinMode(echoPin, INPUT);       // set the echo pin of the ultrasonic sensor as input
     Serial.println("\n*** Ultrasonic Trashcan Mode ***");
     Serial.println("Ultrasonic Trashcan is ready for use. Type 'm' or 'M' + Enter to return to mode menu");
 }
 
 void trashcan_loop() {
-    
-    digitalWrite(trigPin, LOW);
+
+    digitalWrite(trigPin, LOW);  // send out a low trigger pulse
     delayMicroseconds(2);
-    digitalWrite(trigPin, HIGH);
+    digitalWrite(trigPin, HIGH); // send out a high trigger pulse
     delayMicroseconds(10);
-    digitalWrite(trigPin, LOW);
+    digitalWrite(trigPin, LOW);  // resend a low trigger pulse 
 
     duration = pulseIn(echoPin, HIGH);      // returns total time it takes to go out and come back in microseconds
     distance = (duration * soundSpeed) / 2; // multiply the total time by the speed of sound and divide by 2 to get just the distance to an object in centimeters
 
+    // if statement to trigger trashcan functionality whenver the distance to an object is less than 20 cm
     if (distance < 20) {
         Serial.println("Trashcan is opening!\n");
         controlServo.write(90); // open trashcan

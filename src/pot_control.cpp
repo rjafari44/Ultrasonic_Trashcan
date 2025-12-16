@@ -3,15 +3,19 @@
 #include <ESP32Servo.h>
 
 // global variable declaration, made to only be used within this file
+// servo variables
 const int servoPin{10};
 static Servo controlServo{};
 
+// potentiometer variables
 const int potReadPin{4};
 static int potValue{};
 
+// angle variables
 static int hardAngle{};
 static int smoothAngle{};
 
+// menu variable
 static char input{};
 
 void pot_setup() {
