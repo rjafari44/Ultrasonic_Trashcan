@@ -28,8 +28,7 @@ void pot_loop() {
     smoothAngle = (smoothAngle * 3 + hardAngle) / 4;  // Simple smoothing: blend previous and current angle
     controlServo.write(hardAngle);                    // wite the angle to the servo
 
-    Serial.println("\nAngle is: " + smoothAngle);     // dampen out angle
-
+    Serial.println("\nAngle is: " + smoothAngle);     // display the dampened angle
     delay(20);
 
     if (Serial.available() > 0) {        // If a character is waiting in the Serial input buffer, read it
