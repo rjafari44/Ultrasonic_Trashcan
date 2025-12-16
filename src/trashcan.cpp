@@ -18,7 +18,9 @@ static char input{};
 
 void trashcan_setup() {
 
+    pinMode(servoPin, OUTPUT);
     controlServo.attach(servoPin); // setup the servo pin
+    controlServo.write(0);         // set the servo to default angle of 0 to ensure it is in position.
     pinMode(trigPin, OUTPUT);      // set the trigger pin of the ultrasonic sensor as output
     pinMode(echoPin, INPUT);       // set the echo pin of the ultrasonic sensor as input
     Serial.println("\n*** Ultrasonic Trashcan Mode ***");
@@ -50,6 +52,9 @@ void trashcan_loop() {
         input = Serial.read();
         
         if (input == '\n' || input == '\r') {    // Serial input includes '\r' and '\n' after the user presses Enter; ignore them
+            while (Serial.available() > 0) {
+                Serial.read(); // flush buffer
+            }
             return;
         }
 
@@ -59,6 +64,7 @@ void trashcan_loop() {
                 currentMode = MENU;     // set current selected mode to menu
                 modeSetup[1] = false;   // mark the current mode's setup as false so it runs again
                 Serial.println("Returning to mode menu...");
+                controlServo.write(0); // ensure servo gets set to angle of 0 as default.
                 break;
             }
             default:      // default case to protect against invalid input
