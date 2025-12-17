@@ -3,7 +3,7 @@
 #include <ESP32Servo.h>
 
 // global variable declaration, made to only be used within this file
-// servo variables
+// servo variabless
 const int servoPin{10};
 static Servo controlServo{};
 static int hardAngle{};
@@ -29,7 +29,7 @@ void pot_loop() {
     controlServo.write(hardAngle);                    // wite the angle to the servo
 
     Serial.print("Angle is: ");
-    Serial.println(hardAngle); // display the dampened angle
+    Serial.println(hardAngle); // display the angle
     delay(20);
 
     if (Serial.available() > 0) {        // If a character is waiting in the Serial input buffer, read it

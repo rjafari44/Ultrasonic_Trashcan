@@ -2,6 +2,7 @@
 #include <Arduino.h>
 #include <ESP32Servo.h>
 
+// global variable declaration, made to only be used within this file
 // servo variables
 static Servo controlServo{};
 const int servoPin{10};
@@ -45,6 +46,7 @@ void trashcan_loop() {
         return; // no echo received
     }
 
+    // if detected object is less than 20 cm and trashcan is not open, open the trashcan
     if (distance < 20 && !trashOpen) {
     Serial.println("Trashcan is opening!");
     controlServo.write(18);
@@ -52,6 +54,7 @@ void trashcan_loop() {
     trashOpen = true;
     }
 
+    // if detected object is equal to or more than 20 cm and trashcan is open, close the trashcan
     if (distance >= 20 && trashOpen) {
     Serial.println("Trashcan is closing!");
     controlServo.write(116);
