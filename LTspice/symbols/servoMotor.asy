@@ -1,0 +1,14 @@
+Version 4
+SymbolType BLOCK
+RECTANGLE Normal 97 -65 -63 0
+CIRCLE Normal 31 -25 1 -53
+TEXT -2 -72 Left 1 Servo Motor
+PIN -32 0 BOTTOM 6
+PINATTR PinName 5V
+PINATTR SpiceOrder 1
+PIN 16 0 BOTTOM 6
+PINATTR PinName GND
+PINATTR SpiceOrder 2
+PIN 64 0 BOTTOM 6
+PINATTR PinName PWM
+PINATTR SpiceOrder 3
