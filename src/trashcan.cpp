@@ -10,17 +10,18 @@ const int servoPin{10};
 const int trigPin = 3;
 const int echoPin = 4;
 long duration{};
-long distance{};
+double distance{};
 double soundSpeed{0.0343}; // speed of sound in centimeters per microseconds
+
+// booloean variable to check if trashcan is open
+bool trashOpen{1};
 
 // menu variable
 static char input{};
 
 void trashcan_setup() {
-
-    pinMode(servoPin, OUTPUT);
     controlServo.attach(servoPin); // setup the servo pin
-    controlServo.write(0);         // set the servo to default angle of 0 to ensure it is in position.
+    controlServo.write(116);         // set the servo to default angle of 0 to ensure it is in position.
     pinMode(trigPin, OUTPUT);      // set the trigger pin of the ultrasonic sensor as output
     pinMode(echoPin, INPUT);       // set the echo pin of the ultrasonic sensor as input
     Serial.println("\n*** Ultrasonic Trashcan Mode ***");
@@ -35,18 +36,29 @@ void trashcan_loop() {
     delayMicroseconds(10);
     digitalWrite(trigPin, LOW);  // resend a low trigger pulse 
 
-    duration = pulseIn(echoPin, HIGH);      // returns total time it takes to go out and come back in microseconds
-    distance = (duration * soundSpeed) / 2; // multiply the total time by the speed of sound and divide by 2 to get just the distance to an object in centimeters
+    duration = pulseIn(echoPin, HIGH, 30000); // returns total time it takes to go out and come back in microseconds, also has a added 30 ms timeout
 
-    // if statement to trigger trashcan functionality whenver the distance to an object is less than 20 cm
-    if (distance < 20) {
-        Serial.println("Trashcan is opening!\n");
-        controlServo.write(90); // open trashcan
-        delay(5000); // wait 5 seconds before closing
-        Serial.println("Trashcan is closing!\n");
-        controlServo.write(0); // close trashcan
-        delay(500); // wait for trashcan to close
+    // if there is a echo time received
+    if (duration > 0) {
+        distance = (duration * soundSpeed) / 2.0;
+    } else {
+        return; // no echo received
     }
+
+    if (distance < 20 && !trashOpen) {
+    Serial.println("Trashcan is opening!");
+    controlServo.write(18);
+    delay(1000);
+    trashOpen = true;
+    }
+
+    if (distance >= 20 && trashOpen) {
+    Serial.println("Trashcan is closing!");
+    controlServo.write(116);
+    delay(1000);
+    trashOpen = false;
+    }
+
 
     if (Serial.available() > 0) {        // If a character is waiting in the Serial input buffer, read it
         input = Serial.read();
@@ -63,8 +75,9 @@ void trashcan_loop() {
             case 'M': {        // if user chooses upper case 'M'
                 currentMode = MENU;     // set current selected mode to menu
                 modeSetup[1] = false;   // mark the current mode's setup as false so it runs again
+                Serial.println("Trashcan is closing!\n");
                 Serial.println("Returning to mode menu...");
-                controlServo.write(0); // ensure servo gets set to angle of 0 as default.
+                controlServo.write(116); // ensure servo gets set to angle of 0 as default.
                 break;
             }
             default:      // default case to protect against invalid input
