@@ -8,8 +8,8 @@ static Servo controlServo{};
 const int servoPin{10};
 
 // ultrasonic sensor variables
-const int trigPin = 3;
-const int echoPin = 4;
+const int trigPin{3};
+const int echoPin{4};
 long duration{};
 double distance{};
 double soundSpeed{0.0343}; // speed of sound in centimeters per microseconds
