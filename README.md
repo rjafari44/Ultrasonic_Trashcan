@@ -18,7 +18,7 @@ The second mode utilizes an ultrasonic sensor to rotate the servo motor to a set
 
 #### Circuit Two Schematic:
 
-![Diagram](assets/ultrasonic_trashcan.png)
+![Diagram](assets/ultrasonic-trashcan.png)
 
 ---
 
